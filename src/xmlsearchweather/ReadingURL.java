@@ -55,7 +55,7 @@ public class ReadingURL {
             URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?address=" + URLEncoder.encode(posto, "UTF-8"));
             System.out.println(url);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.1", 8080));
-            URLConnection urlConnection = url.openConnection();
+            URLConnection urlConnection = url.openConnection(proxy);
             InputStream in = urlConnection.getInputStream();
             
             
@@ -94,7 +94,7 @@ public class ReadingURL {
         try {
             URL url = WeatherURLHandler.generateURL(posto);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.1", 8080));
-            URLConnection urlConnection = url.openConnection();
+            URLConnection urlConnection = url.openConnection(proxy);
             InputStream in = urlConnection.getInputStream();
             
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
