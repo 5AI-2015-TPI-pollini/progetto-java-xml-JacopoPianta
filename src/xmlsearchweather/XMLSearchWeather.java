@@ -22,8 +22,8 @@ public class XMLSearchWeather {
         // TODO code application logic here
         ReadingURL urlReader = new ReadingURL();
         
-        Luogo brescia = urlReader.scaricaLuogo("brescia");
-        Meteo meteo = urlReader.scaricaMeteo(brescia);
+        Luogo luogo = urlReader.scaricaLuogo("Nave");
+        Meteo meteo = urlReader.scaricaMeteo(luogo);
         System.out.println(meteo);
     }
     

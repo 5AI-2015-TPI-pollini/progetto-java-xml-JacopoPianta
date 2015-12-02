@@ -46,7 +46,8 @@ public class ReadingURL {
     public Luogo scaricaLuogo (String posto) throws ParserConfigurationException, SAXException, XPathExpressionException {
         try {
             
-            URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?address" + URLEncoder.encode(posto, "UTF-8"));
+            URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?address=" + URLEncoder.encode(posto, "UTF-8"));
+            System.out.println(url);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.1", 8080));
             URLConnection urlConnection = url.openConnection(proxy);
             InputStream in = urlConnection.getInputStream();
