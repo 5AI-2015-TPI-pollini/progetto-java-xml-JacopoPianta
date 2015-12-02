@@ -12,6 +12,8 @@ import org.xml.sax.SAXException;
 /**
  *
  * @author Jacopo
+ * @La classe main mi permette di far partire tutto il mio programma. Creo un collegato URL, creo un luogo e da qui inizia tutto
+ * il processo della classe 'ReadingURL'.
  */
 public class XMLSearchWeather {
 

@@ -11,6 +11,9 @@ import java.net.URL;
 /**
  *
  * @author Jacopo
+ * @Nella classe WeatherURLHandler inserisco tutto ciò che mi serve per la connessione ad una stazione meteo. Devo generare
+ * l'URL passandoli come parametro il luogo che scelgo e inoltre passansoli all'interno i parametri utili per la ricerca di quel
+ * determinato posto.
  */
 public class WeatherURLHandler {
     private static final String URL_PREFIX = "http://api.openweathermap.org/data/2.5/weather?";
@@ -37,7 +40,7 @@ public class WeatherURLHandler {
         URLBuilder.append(XML_MODE);
         
         try {
-            //convert to URL
+            //conversione a URL
             URL = new URL(URLBuilder.toString());
         } catch (MalformedURLException ex) {
             System.out.println("URL conversion error");

@@ -31,6 +31,11 @@ import org.xml.sax.SAXException;
 /**
  *
  * @author Jacopo
+ * @La classe ReadingURL, tramite il metodo scaricaLuogo mi permette di, oltre che fare l'autenticazione del proxy, di prendere
+ * direttamente dal servizio googleapis di google l' XML.Scorrendolo tramite l'XPath posso risalire alla latitudine e longitudine contenuti nel
+ * documento XML. Una volta trovati questi dati faccio un' altra connessione, tramite il proxy, ad una stazione di google per ricavare
+ * la previsione del tempo, ne ricavo quindi la temeperatura attuale, quella massima, quella minima e anche la previsione del tempo.
+ * previsione del tempo. 
  */
 public class ReadingURL {
     private static final String FORMATTED_ADDRESS = "/GeocodeResponse/result/formatted_address/text()";
@@ -40,6 +45,7 @@ public class ReadingURL {
     private static final String CURRENT_TEMPERATURE = "/current/temperature/@value";
     private static final String MIN_TEMPERATURE = "/current/temperature/@min";
     private static final String MAX_TEMPERATURE = "/current/temperature/@max";
+    private static final String CURRENT_STATE = "/current/weather/@value";
     
     public ReadingURL(){}
     
@@ -49,7 +55,7 @@ public class ReadingURL {
             URL url = new URL("https://maps.googleapis.com/maps/api/geocode/xml?address=" + URLEncoder.encode(posto, "UTF-8"));
             System.out.println(url);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.1", 8080));
-            URLConnection urlConnection = url.openConnection(proxy);
+            URLConnection urlConnection = url.openConnection();
             InputStream in = urlConnection.getInputStream();
             
             
@@ -88,7 +94,7 @@ public class ReadingURL {
         try {
             URL url = WeatherURLHandler.generateURL(posto);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.0.1", 8080));
-            URLConnection urlConnection = url.openConnection(proxy);
+            URLConnection urlConnection = url.openConnection();
             InputStream in = urlConnection.getInputStream();
             
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -106,11 +112,17 @@ public class ReadingURL {
             String max = maxs.item(0).getNodeValue();
             
             //prendo la temeperatura minima
-            XPathExpression minExpression= (XPathExpression) xpath.compile(MAX_TEMPERATURE);
+            XPathExpression minExpression = (XPathExpression) xpath.compile(MAX_TEMPERATURE);
             NodeList mins = (NodeList) tempExpression.evaluate(xml, XPathConstants.NODESET);
             String min = mins.item(0).getNodeValue();
             
-            return new Meteo(temp, max, min);
+            //prendo il meteo che c'è
+            XPathExpression meteoExpression = (XPathExpression) xpath.compile(CURRENT_STATE);
+            NodeList meteos = (NodeList) meteoExpression.evaluate(xml, XPathConstants.NODESET);
+            String previsione = meteos.item(0).getNodeValue();
+            
+            
+            return new Meteo(temp, max, min, previsione);
         } catch (Exception ex) {}
         return null;
     }
